@@ -14,7 +14,7 @@ namespace OOP_familyTree
         public String name { get; }
         public genders gender { get; }
         public int age { get; }
-        public List<Person> childrens { get; private set; }
+        private List<Person> childrens;
         public Person married { get; private set; }
         public Person mother { get; private set; }
         public Person father { get; private set; }
@@ -73,6 +73,12 @@ namespace OOP_familyTree
                 }
                 this.childrens.Add(baby);
             }
+        }
+        public List<Person> getChildrens()
+        {
+            List<Person> _childrens = new List<Person>();
+            _childrens.AddRange(childrens);
+            return _childrens;
         }
         public void printParents()
         {
