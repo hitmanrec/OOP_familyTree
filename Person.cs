@@ -6,23 +6,28 @@ namespace OOP_familyTree
 {
     public class Person
     {
-        public String name, sex;
-        public int age;
-        public List<Person> childrens;
-        public Person married, mother, father;
+        public enum genders
+        {
+            Male,
+            Female
+        }
+        public String name { get; }
+        public genders gender { get; }
+        public int age { get; }
+        public List<Person> childrens { get; private set; }
+        public Person married { get; private set; }
+        public Person mother { get; private set; }
+        public Person father { get; private set; }
 
-        public Person(string _name, string _sex, int _age)
+        public Person(string _name, genders _gender, int _age)
         {
             name = _name;
-            if(_sex != "Male" && _sex != "Female")
-                throw new ArgumentException("Person's sex has to be Male or Female!");
-            sex = _sex;
+            gender = _gender;
             if(_age <= 0 || _age > 150)
                 throw new ArgumentException("Person's age cannot be less than zero or greater than 150 years (people can't live for so long nowadays)!");
             age = _age;
             childrens = new List<Person>();
         }
-
         public void setMarriage(Person other)
         {
             if(this.married != null || other.married != null)
@@ -46,15 +51,15 @@ namespace OOP_familyTree
         }
         public void setChildrens(List<Person> babies, Person secondParent = null)
         {
-            if (this.sex == secondParent.sex)
-                throw new ArgumentException("Parents are have the same sex! This class accepts only heterosexual parents (want to represent LGBT? find another way).");
+            if (this.gender == secondParent.gender)
+                throw new ArgumentException("Parents are the same gender! This class accepts only heterosexual parents (want to represent LGBT? find another way).");
             foreach (var baby in babies)
             {
                 if(baby.age >= this.age)
                     throw new Exception("Childrens cannot be older than their parents!");
                 if (baby == this || baby == secondParent)
                     throw new ArgumentException("Person can't be children of himself!");
-                if (this.sex == "Male")
+                if (this.gender == genders.Male)
                 {
                     baby.father = this;
                     if (secondParent != null)
@@ -80,8 +85,7 @@ namespace OOP_familyTree
         {
             var sibs = this.getSiblings();
             if(sibs.Count > 0)
-            foreach(var sib in sibs)
-                Console.WriteLine(sib.name);
+            sibs.ForEach(item => Console.WriteLine(item.name));
             else
                 Console.WriteLine("No siblings :(");
         }
@@ -103,8 +107,7 @@ namespace OOP_familyTree
         {
             var relatives = this.getUnclesAndAunts();
             if(relatives.Count > 0)
-                foreach(var relative in relatives)
-                    Console.WriteLine(relative.name);
+                relatives.ForEach(item => Console.WriteLine(item.name));
             else
                 Console.WriteLine("No aunts or uncles :(");
         }
@@ -113,19 +116,9 @@ namespace OOP_familyTree
         {
             List<Person> relatives = new List<Person>();
             if (this.father != null)
-            {
-                var sibF = this.father.getSiblings();
-                if(sibF.Count > 0)
-                foreach (var relative in sibF)
-                        relatives.Add(relative);
-            }
+                relatives.AddRange(this.father.getSiblings());
             if (this.mother != null)
-            {
-                var sibM = this.mother.getSiblings();
-                if(sibM.Count > 0)
-                foreach (var relative in sibM)
-                    relatives.Add(relative);
-            }
+                relatives.AddRange(this.mother.getSiblings());
             List<Person> _relatives = relatives.Distinct().ToList();
             return _relatives;
         }
@@ -137,8 +130,7 @@ namespace OOP_familyTree
             var relatives = this.getUnclesAndAunts();
             if(relatives.Count > 0)
                 foreach(var relative in relatives)
-                    foreach(var baby in relative.childrens)
-                        cousins.Add(baby);
+                    cousins.AddRange(relative.childrens);
 
             List<Person> _cousins = cousins.Distinct().ToList();
             return _cousins;
@@ -148,16 +140,10 @@ namespace OOP_familyTree
         {
             var cousins = this.getCousins();
             if(cousins.Count > 0)
-            foreach(var cousin in cousins)
-            {
-                Console.WriteLine(cousin.name);
-            }
+                cousins.ForEach(item => Console.WriteLine(item.name));
             else
-            {
                 Console.WriteLine("No cousins :(");
-            }
         }
-
         public void printParentsInLaw()
         {
             if (this.married == null)
