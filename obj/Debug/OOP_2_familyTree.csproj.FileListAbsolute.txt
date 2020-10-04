@@ -1,7 +1,0 @@
-D:\Projects\OOP_2_familyTree\bin\Debug\OOP_2_familyTree.exe.config
-D:\Projects\OOP_2_familyTree\bin\Debug\OOP_2_familyTree.exe
-D:\Projects\OOP_2_familyTree\bin\Debug\OOP_2_familyTree.pdb
-D:\Projects\OOP_2_familyTree\obj\Debug\OOP_2_familyTree.csprojAssemblyReference.cache
-D:\Projects\OOP_2_familyTree\obj\Debug\OOP_2_familyTree.csproj.CoreCompileInputs.cache
-D:\Projects\OOP_2_familyTree\obj\Debug\OOP_2_familyTree.exe
-D:\Projects\OOP_2_familyTree\obj\Debug\OOP_2_familyTree.pdb
