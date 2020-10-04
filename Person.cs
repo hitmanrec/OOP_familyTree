@@ -18,7 +18,6 @@ namespace OOP_familyTree
         public Person married { get; private set; }
         public Person mother { get; private set; }
         public Person father { get; private set; }
-        //remove printers
         public Person(string _name, genders _gender, int _age)
         {
             name = _name;
@@ -28,7 +27,7 @@ namespace OOP_familyTree
             age = _age;
             childrens = new List<Person>();
         }
-        public void setMarriage(Person other)
+        public void SetMarriage(Person other)
         {
             if(this.married != null || other.married != null)
                 throw new ArgumentException("Person already married!");
@@ -40,7 +39,7 @@ namespace OOP_familyTree
                 other.married = this;
             }
         }
-        public Person divorce()
+        public Person Divorce()
         {
             if(this.married == null)
                 throw new Exception("Person not married!");
@@ -49,7 +48,7 @@ namespace OOP_familyTree
             this.married = null;
             return other;
         }
-        public void setChildrens(List<Person> babies, Person secondParent = null)
+        public void SetChildrens(List<Person> babies, Person secondParent = null)
         {
             if (this.gender == secondParent.gender)
                 throw new ArgumentException("Parents are the same gender! This class accepts only heterosexual parents (want to represent LGBT? find another way).");
@@ -74,13 +73,13 @@ namespace OOP_familyTree
                 this.childrens.Add(baby);
             }
         }
-        public List<Person> getChildrens()
+        public List<Person> GetChildrens()
         {
             List<Person> _childrens = new List<Person>();
             _childrens.AddRange(childrens);
             return _childrens;
         }
-        public List<Person> getSiblings()
+        public List<Person> GetSiblings()
         {
             List<Person> siblings = new List<Person>();
             if (this.father != null)
@@ -94,27 +93,59 @@ namespace OOP_familyTree
             List<Person> _siblings = siblings.Distinct().ToList();
             return _siblings;
         }
-        public List<Person> getUnclesAndAunts()
+        public List<Person> GetUnclesAndAunts()
         {
             List<Person> relatives = new List<Person>();
             if (this.father != null)
-                relatives.AddRange(this.father.getSiblings());
+            {
+                var fSibs = this.father.GetSiblings();
+                relatives.AddRange(fSibs);
+                foreach(var sib in fSibs)
+                {
+                    if (sib.married != null)
+                    {
+                        relatives.Add(sib.married);
+                    }
+                }
+            }
             if (this.mother != null)
-                relatives.AddRange(this.mother.getSiblings());
+            {
+                var mSibs = this.mother.GetSiblings();
+                relatives.AddRange(mSibs);
+                foreach(var sib in mSibs)
+                {
+                    if (sib.married != null)
+                    {
+                        relatives.Add(sib.married);
+                    }
+                }
+            }
+                
+
             List<Person> _relatives = relatives.Distinct().ToList();
             return _relatives;
         }
-        public List<Person> getCousins()
+        public List<Person> GetCousins()
         {
             List<Person> cousins = new List<Person>();
 
-            var relatives = this.getUnclesAndAunts();
+            var relatives = this.GetUnclesAndAunts();
             if(relatives.Count > 0)
                 foreach(var relative in relatives)
                     cousins.AddRange(relative.childrens);
 
             List<Person> _cousins = cousins.Distinct().ToList();
             return _cousins;
+        }
+        public List<Person> GetParentsInLaw()
+        {
+            List<Person> PIL = new List<Person>();
+            if(married != null)
+            {
+                PIL.Add(married.father);
+                PIL.Add(married.mother);
+            }
+            return PIL;
         }
     }
 }
