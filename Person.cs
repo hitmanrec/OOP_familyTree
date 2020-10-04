@@ -18,7 +18,7 @@ namespace OOP_familyTree
         public Person married { get; private set; }
         public Person mother { get; private set; }
         public Person father { get; private set; }
-
+        //remove printers
         public Person(string _name, genders _gender, int _age)
         {
             name = _name;
@@ -80,22 +80,7 @@ namespace OOP_familyTree
             _childrens.AddRange(childrens);
             return _childrens;
         }
-        public void printParents()
-        {
-            if (this.father != null)
-                Console.WriteLine(father.name);
-            if (this.mother != null)
-                Console.WriteLine(mother.name);
-        }
-        public void printSiblings()
-        {
-            var sibs = this.getSiblings();
-            if(sibs.Count > 0)
-            sibs.ForEach(item => Console.WriteLine(item.name));
-            else
-                Console.WriteLine("No siblings :(");
-        }
-        private List<Person> getSiblings()
+        public List<Person> getSiblings()
         {
             List<Person> siblings = new List<Person>();
             if (this.father != null)
@@ -109,16 +94,7 @@ namespace OOP_familyTree
             List<Person> _siblings = siblings.Distinct().ToList();
             return _siblings;
         }
-        public void printUnclesAndAunts()
-        {
-            var relatives = this.getUnclesAndAunts();
-            if(relatives.Count > 0)
-                relatives.ForEach(item => Console.WriteLine(item.name));
-            else
-                Console.WriteLine("No aunts or uncles :(");
-        }
-
-        private List<Person> getUnclesAndAunts()
+        public List<Person> getUnclesAndAunts()
         {
             List<Person> relatives = new List<Person>();
             if (this.father != null)
@@ -128,8 +104,7 @@ namespace OOP_familyTree
             List<Person> _relatives = relatives.Distinct().ToList();
             return _relatives;
         }
-
-        private List<Person> getCousins()
+        public List<Person> getCousins()
         {
             List<Person> cousins = new List<Person>();
 
@@ -140,27 +115,6 @@ namespace OOP_familyTree
 
             List<Person> _cousins = cousins.Distinct().ToList();
             return _cousins;
-        }
-
-        public void printCousins()
-        {
-            var cousins = this.getCousins();
-            if(cousins.Count > 0)
-                cousins.ForEach(item => Console.WriteLine(item.name));
-            else
-                Console.WriteLine("No cousins :(");
-        }
-        public void printParentsInLaw()
-        {
-            if (this.married == null)
-                Console.WriteLine("Person not married.");
-            else
-            {
-                if (this.married.father != null)
-                    Console.WriteLine(this.married.father.name);
-                if (this.married.mother != null)
-                    Console.WriteLine(this.married.mother.name);
-            }
         }
     }
 }

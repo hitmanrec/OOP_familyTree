@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using System.Threading.Tasks;
 using System;
+using System.IO;
 using System.Collections.Generic;
 
 namespace OOP_familyTree
@@ -9,6 +10,7 @@ namespace OOP_familyTree
     {
         static void Main(string[] args)
         {
+            bool writeToFile = false;
             List<Person> family = new List<Person>();
             family.Add(new Person("Jan Simon", Person.genders.Female, 80));//0
             family.Add(new Person("John Hamilton", Person.genders.Male, 84));
@@ -46,15 +48,98 @@ namespace OOP_familyTree
 
             family[12].setChildrens(new List<Person> { family[16] }, family[13]);
             family[15].setChildrens(new List<Person> { family[17] }, family[14]);
+            if(writeToFile)
+                using (StreamWriter sw = new StreamWriter("result.txt"))
+                {
+                    sw.WriteLine("Cousins of " + family[12].name);
+                    var cousins = family[12].getCousins();
+                    if (cousins.Count > 0)
+                        cousins.ForEach(item => sw.WriteLine(item.name));
+                    else
+                        sw.WriteLine("No cousins :(");
 
-            Console.WriteLine("Cousins of " + family[12].name);
-            family[12].printCousins();
-            Console.WriteLine("\nParents of " + family[12].name);
-            family[12].printParents();
-            Console.WriteLine("\nUncles and aunts of " + family[12].name);
-            family[12].printUnclesAndAunts();
-            Console.WriteLine("\nParents in law of " + family[13].name);
-            family[13].printParentsInLaw();
+                    sw.WriteLine("\nParents of " + family[12].name);
+                    if (family[12].father != null)
+                        sw.WriteLine(family[12].father.name);
+                    if (family[12].mother != null)
+                        sw.WriteLine(family[12].mother.name);
+
+                    sw.WriteLine("\nUncles and aunts of " + family[12].name);
+                    var relatives = family[12].getUnclesAndAunts();
+                    if (relatives.Count > 0)
+                        relatives.ForEach(item => sw.WriteLine(item.name));
+                    else
+                        sw.WriteLine("No aunts or uncles :(");
+
+                    sw.WriteLine("\nParents in law of " + family[13].name);
+                    if (family[13].married == null)
+                        Console.WriteLine("Person not married.");
+                    else
+                    {
+                        if (family[13].married.father != null)
+                            sw.WriteLine(family[13].married.father.name);
+                        if (family[13].married.mother != null)
+                            sw.WriteLine(family[13].married.mother.name);
+                    }
+                }
+            else
+            {
+                Console.WriteLine("Cousins of " + family[12].name);
+                printCousins(family[12]);
+                Console.WriteLine("\nParents of " + family[12].name);
+                printParents(family[12]);
+                Console.WriteLine("\nUncles and aunts of " + family[12].name);
+                printUnclesAndAunts(family[12]);
+                Console.WriteLine("\nParents in law of " + family[13].name);
+                printParentsInLaw(family[13]);
+            }
+            
+        }
+
+        public static void printParents(Person p)
+        {
+            if (p.father != null)
+                Console.WriteLine(p.father.name);
+            if (p.mother != null)
+                Console.WriteLine(p.mother.name);
+        }
+        public static void printSiblings(Person p)
+        {
+            var sibs = p.getSiblings();
+            if (sibs.Count > 0)
+                sibs.ForEach(item => Console.WriteLine(item.name));
+            else
+                Console.WriteLine("No siblings :(");
+        }
+        public static void printUnclesAndAunts(Person p)
+        {
+            var relatives = p.getUnclesAndAunts();
+            if (relatives.Count > 0)
+                relatives.ForEach(item => Console.WriteLine(item.name));
+            else
+                Console.WriteLine("No aunts or uncles :(");
+        }
+        public static void printCousins(Person p)
+        {
+            var cousins = p.getCousins();
+            if (cousins.Count > 0)
+                cousins.ForEach(item => Console.WriteLine(item.name));
+            else
+                Console.WriteLine("No cousins :(");
+        }
+        public static void printParentsInLaw(Person p)
+        {
+            if (p.married == null)
+                Console.WriteLine("Person not married.");
+            else
+            {
+                if (p.married.father != null)
+                    Console.WriteLine(p.married.father.name);
+                if (p.married.mother != null)
+                    Console.WriteLine(p.married.mother.name);
+            }
         }
     }
+
+
 }
