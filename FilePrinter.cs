@@ -9,42 +9,15 @@ namespace OOP_familyTree
         {
             sw = new StreamWriter(fileName);
         }
-        public void PrintCousins(Person p)
+        public void WriteLine(string s)
         {
-            var cousins = p.GetCousins();
-            if (cousins.Count > 0)
-                cousins.ForEach(item => sw.WriteLine(item.name));
-            else
-                sw.WriteLine("No cousins :(");
+            sw.WriteLine(s);
         }
 
-        public void PrintParents(Person p)
+        public void Write(string s)
         {
-            if (p.father != null)
-                sw.WriteLine(p.father.name);
-            if (p.mother != null)
-                sw.WriteLine(p.mother.name);
-        }
-
-        public void PrintParentsInLaw(Person p)
-        {
-            if (p.married == null)
-                sw.WriteLine("Person not married.");
-            else
-            {
-                var pil = p.GetParentsInLaw();
-                pil.ForEach(item => sw.WriteLine(item.name));
-            }
-        }
-
-        public void PrintUnclesAndAunts(Person p)
-        {
-            var relatives = p.GetUnclesAndAunts();
-            if (relatives.Count > 0)
-                relatives.ForEach(item => sw.WriteLine(item.name));
-            else
-                sw.WriteLine("No aunts or uncles :(");
+            sw.Write(s);
         }
     }
-
 }
+

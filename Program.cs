@@ -52,15 +52,52 @@ namespace OOP_familyTree
                 printer = new FilePrinter("result.txt");
             else printer = new ConsolePrinter();
 
-            Console.WriteLine("Cousins of " + family[12].name);
-            printer.PrintCousins(family[12]);
-            Console.WriteLine("\nParents of " + family[12].name);
-            printer.PrintParents(family[12]);
-            Console.WriteLine("\nUncles and aunts of " + family[12].name);
-            printer.PrintUnclesAndAunts(family[12]);
-            Console.WriteLine("\nParents in law of " + family[13].name);
-            printer.PrintParentsInLaw(family[13]);
+            printer.WriteLine("Cousins of " + family[12].name);
+            PrintCousins(family[12], printer);
+            printer.WriteLine("\nParents of " + family[12].name);
+            PrintParents(family[12], printer);
+            printer.WriteLine("\nUncles and aunts of " + family[12].name);
+            PrintUnclesAndAunts(family[12], printer);
+            printer.WriteLine("\nParents in law of " + family[13].name);
+            PrintParentsInLaw(family[13], printer);
             
+        }
+
+        static public void PrintCousins(Person p, IPrint printer)
+        {
+            var cousins = p.GetCousins();
+            if (cousins.Count > 0)
+                cousins.ForEach(item => printer.WriteLine(item.name));
+            else
+                printer.WriteLine("No cousins :(");
+        }
+
+        static public void PrintParents(Person p, IPrint printer)
+        {
+            if (p.father != null)
+                printer.WriteLine(p.father.name);
+            if (p.mother != null)
+                printer.WriteLine(p.mother.name);
+        }
+
+        static public void PrintParentsInLaw(Person p, IPrint printer)
+        {
+            if (p.married == null)
+                printer.WriteLine("Person not married.");
+            else
+            {
+                var pil = p.GetParentsInLaw();
+                pil.ForEach(item => printer.WriteLine(item.name));
+            }
+        }
+
+        static public void PrintUnclesAndAunts(Person p, IPrint printer)
+        {
+            var relatives = p.GetUnclesAndAunts();
+            if (relatives.Count > 0)
+                relatives.ForEach(item => printer.WriteLine(item.name));
+            else
+                printer.WriteLine("No aunts or uncles :(");
         }
     }
 
